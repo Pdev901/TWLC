@@ -1,0 +1,93 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Thames Water Leak Counter</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <style>
+    html, body {
+      margin: 0;
+      padding: 0;
+      background-color: #000;
+      color: #0f0;
+      font-family: 'Courier New', Courier, monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      text-align: center;
+      padding: 2rem 1rem;
+    }
+
+    h1 {
+      font-size: 2.2em;
+      margin-bottom: 0.5rem;
+      color: #0f0;
+    }
+
+    .description {
+      font-size: 1.1em;
+      color: #aaa;
+      max-width: 700px;
+      margin-bottom: 2rem;
+    }
+
+    #counter {
+      font-size: 2.2em;
+      font-weight: bold;
+      color: #00ff00;
+      background: rgba(0, 255, 0, 0.1);
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      box-shadow: 0 0 10px #0f0;
+      max-width: 90vw;
+    }
+
+    .label {
+      margin-top: 1.5rem;
+      font-size: 1em;
+      color: #888;
+    }
+
+    .footnote {
+      margin-top: 2.5rem;
+      font-size: 0.9em;
+      color: #555;
+      max-width: 700px;
+      line-height: 1.4;
+    }
+  </style>
+</head>
+<body>
+  <h1>Thames Water Leak Counter</h1>
+  <div class="description">
+    How many litres of water has Thames Water lost to leaks since introducing the 2025 "hosepipe ban" at 0001hrs on July 22nd.
+  </div>
+  <div id="counter">Loading...</div>
+  <div class="label">Since 00:01 on Tuesday 22nd July 2025</div>
+  <div class="footnote">
+    Leakage rate used is based on the reported leakage figures from Thames Water, as quoted in public sources (including Thames Water's own reports and Ofwat data): approximately 600 million litres per day.
+  </div>
+
+  <script>
+    const leakStart = 1753142460 * 1000; // ms
+    const litresPerSecond = 7000;
+    const litresPerShower = 40;
+
+    const counter = document.getElementById('counter');
+
+    function updateCounter() {
+      const now = Date.now();
+      const elapsedSeconds = (now - leakStart) / 1000;
+      const leakedLitres = Math.floor(elapsedSeconds * litresPerSecond);
+      const equivalentShowers = Math.floor(leakedLitres / litresPerShower);
+      counter.textContent = leakedLitres.toLocaleString() + " litres lost to leaks.\n(That's equivalent to " + equivalentShowers.toLocaleString() + " four minute showers at 40 litres/shower)";
+      requestAnimationFrame(updateCounter);
+    }
+
+    updateCounter();
+  </script>
+</body>
+</html>
